@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Template website komik statis untuk GitHub Pages.">
+  <title>KomikKu — Baca Komik Online</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="./">KOMIK<span>KU</span></a>
+    <button class="menu-btn" aria-label="Buka menu">☰</button>
+    <nav class="nav">
+      <a href="#home">Beranda</a>
+      <a href="#latest">Terbaru</a>
+      <a href="#popular">Populer</a>
+      <a href="#genres">Genre</a>
+    </nav>
+    <button id="themeBtn" class="icon-btn" title="Ganti tema">☾</button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">WEBCOMIC PLATFORM</p>
+        <h1>Baca komik favoritmu,<br><span>tanpa ribet.</span></h1>
+        <p class="hero-copy">Template ringan, responsif, dan siap deploy ke GitHub Pages. Tinggal ganti data komik dan gambar.</p>
+        <a class="btn primary" href="#latest">Mulai Membaca →</a>
+      </div>
+      <div class="hero-card">
+        <div class="hero-art">MANGA<br><strong>SPOTLIGHT</strong></div>
+      </div>
+    </section>
+
+    <section class="section" id="latest">
+      <div class="section-head">
+        <div><p class="eyebrow">UPDATE TERBARU</p><h2>Komik Terbaru</h2></div>
+        <a href="#all" class="text-link">Lihat semua →</a>
+      </div>
+      <div id="comicGrid" class="comic-grid"></div>
+    </section>
+
+    <section class="section" id="popular">
+      <div class="section-head">
+        <div><p class="eyebrow">FAVORIT PEMBACA</p><h2>Komik Populer</h2></div>
+      </div>
+      <div id="popularGrid" class="comic-grid"></div>
+    </section>
+
+    <section class="section" id="genres">
+      <div class="section-head"><div><p class="eyebrow">JELAJAHI</p><h2>Genre</h2></div></div>
+      <div id="genreList" class="genres"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><a class="logo" href="./">KOMIK<span>KU</span></a><p>Template komik statis untuk GitHub Pages.</p></div>
+    <div class="footer-links"><a href="#latest">Terbaru</a><a href="#popular">Populer</a><a href="#genres">Genre</a></div>
+  </footer>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
