@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Baca komik online di KomikKu"
+  >
+
+  <meta
+    name="theme-color"
+    content="#111111"
+  >
+
+  <title>Baca Komik — KomikKu</title>
+
+  <!-- CSS utama -->
+  <link
+    rel="stylesheet"
+    href="assets/style.css"
+  >
+
+  <!-- CSS khusus reader -->
+  <style>
+    /* ==========================================
+       READER PAGE
+       ========================================== */
+
+    body.reader-page {
+      margin: 0;
+      background: #0b0b0f;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    /* ==========================================
+       HEADER
+       ========================================== */
+
+    .reader-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 12px 18px;
+
+      box-sizing: border-box;
+
+      background: rgba(11, 11, 15, 0.94);
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ==========================================
+       LOGO
+       ========================================== */
+
+    .reader-header .logo {
+      flex-shrink: 0;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .reader-header .logo span {
+      color: #8b5cf6;
+    }
+
+    /* ==========================================
+       JUDUL KOMIK
+       ========================================== */
+
+    #readerTitle {
+      flex: 1;
+
+      min-width: 0;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      text-align: center;
+
+      font-size: 15px;
+
+      font-weight: 700;
+    }
+
+    /* ==========================================
+       KEMBALI
+       ========================================== */
+
+    .back-link {
+      flex-shrink: 0;
+
+      color: #b7b7c4;
+
+      text-decoration: none;
+
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #ffffff;
+    }
+
+    /* ==========================================
+       MAIN
+       ========================================== */
+
+    .reader-page main {
+      width: 100%;
+
+      max-width: 1000px;
+
+      margin: 0 auto;
+    }
+
+    /* ==========================================
+       TOOLBAR
+       ========================================== */
+
+    .reader-toolbar {
+      position: sticky;
+
+      top: 61px;
+
+      z-index: 900;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      padding: 12px;
+
+      background: rgba(11, 11, 15, 0.92);
+
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    #chapterLabel {
+      flex: 1;
+
+      max-width: 400px;
+
+      text-align: center;
+
+      font-size: 14px;
+
+      color: #c8c8d2;
+
+      font-weight: 600;
+    }
+
+    /* ==========================================
+       BUTTON
+       ========================================== */
+
+    .reader-toolbar .btn,
+    .reader-bottom .btn {
+
+      border: 1px solid rgba(255,255,255,0.1);
+
+      background: #18181f;
+
+      color: #ffffff;
+
+      border-radius: 10px;
+
+      padding: 10px 15px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .reader-toolbar .btn:hover,
+    .reader-bottom .btn:hover {
+      background: #252530;
+
+      transform: translateY(-1px);
+    }
+
+    .reader-toolbar .btn.primary,
+    .reader-bottom .btn.primary {
+      background: #8b5cf6;
+
+      border-color: #8b5cf6;
+    }
+
+    .reader-toolbar .btn.primary:hover,
+    .reader-bottom .btn.primary:hover {
+      background: #7c3aed;
+    }
+
+    .reader-toolbar .btn:disabled,
+    .reader-bottom .btn:disabled {
+      opacity: 0.35;
+
+      cursor: not-allowed;
+
+      transform: none;
+    }
+
+    /* ==========================================
+       HALAMAN KOMIK
+       ========================================== */
+
+    .pages {
+      width: 100%;
+
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      background: #111118;
+    }
+
+    /*
+     * Gambar dibuat block supaya tidak ada
+     * jarak putih/space antar gambar.
+     */
+
+    .pages .comic-page {
+      display: block;
+
+      width: 100%;
+
+      max-width: 100%;
+
+      height: auto;
+
+      margin: 0 auto;
+
+      padding: 0;
+
+      border: 0;
+
+      outline: none;
+
+      background: #111118;
+
+      user-select: none;
+
+      -webkit-user-drag: none;
+    }
+
+    /* ==========================================
+       LOADING
+       ========================================== */
+
+    .reader-loading {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-height: 300px;
+
+      padding: 40px;
+
+      text-align: center;
+
+      color: #aaaab7;
+    }
+
+    .reader-spinner {
+      width: 36px;
+
+      height: 36px;
+
+      margin-bottom: 15px;
+
+      border: 3px solid rgba(255,255,255,0.12);
+
+      border-top-color: #8b5cf6;
+
+      border-radius: 50%;
+
+      animation:
+        readerSpin 0.8s linear infinite;
+    }
+
+    @keyframes readerSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ==========================================
+       ERROR
+       ========================================== */
+
+    .reader-error {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-height: 300px;
+
+      padding: 30px;
+
+      text-align: center;
+
+      color: #ffffff;
+    }
+
+    .reader-error h2 {
+      margin: 0 0 10px;
+
+      font-size: 22px;
+    }
+
+    .reader-error p {
+      max-width: 600px;
+
+      margin: 0 0 20px;
+
+      color: #aaaab7;
+
+      word-break: break-word;
+    }
+
+    .reload-btn {
+      border: 0;
+
+      padding: 11px 18px;
+
+      border-radius: 10px;
+
+      background: #8b5cf6;
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       ERROR PER HALAMAN
+       ========================================== */
+
+    .page-error {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      padding: 30px 15px;
+
+      background: #17171f;
+
+      color: #ffffff;
+
+      text-align: center;
+    }
+
+    .page-error strong {
+      font-size: 15px;
+    }
+
+    .page-error small {
+      max-width: 90%;
+
+      color: #8f8f9d;
+
+      word-break: break-all;
+    }
+
+    .page-error button {
+      margin-top: 5px;
+
+      border: 0;
+
+      border-radius: 8px;
+
+      padding: 8px 14px;
+
+      background: #8b5cf6;
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    /* ==========================================
+       BOTTOM NAVIGATION
+       ========================================== */
+
+    .reader-bottom {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 25px 15px 50px;
+
+      background: #0b0b0f;
+    }
+
+    /* ==========================================
+       MOBILE
+       ========================================== */
+
+    @media (max-width: 600px) {
+
+      .reader-header {
+        padding: 10px 12px;
+      }
+
+      .reader-header .logo {
+        font-size: 15px;
+      }
+
+      #readerTitle {
+        font-size: 13px;
+      }
+
+      .back-link {
+        font-size: 12px;
+      }
+
+      .reader-toolbar {
+        top: 52px;
+
+        gap: 7px;
+
+        padding: 8px;
+      }
+
+      .reader-toolbar .btn,
+      .reader-bottom .btn {
+        padding: 9px 10px;
+
+        font-size: 12px;
+      }
+
+      #chapterLabel {
+        font-size: 12px;
+      }
+
+      .reader-bottom {
+        padding: 20px 10px 40px;
+      }
+    }
+  </style>
+</head>
+
+<body class="reader-page">
+
+  <!-- ==========================================
+       HEADER
+       ========================================== -->
+
+  <header class="reader-header">
+
+    <a
+      class="logo"
+      href="./"
+      aria-label="Kembali ke halaman utama"
+    >
+      KOMIK<span>KU</span>
+    </a>
+
+    <div
+      id="readerTitle"
+      aria-live="polite"
+    >
+      Membaca…
+    </div>
+
+    <a
+      class="back-link"
+      href="./"
+    >
+      ← Kembali
+    </a>
+
+  </header>
+
+
+  <!-- ==========================================
+       MAIN READER
+       ========================================== -->
+
+  <main>
+
+    <!-- ========================================
+         NAVIGASI ATAS
+         ======================================== -->
+
+    <div class="reader-toolbar">
+
+      <button
+        id="prevBtn"
+        class="btn"
+        type="button"
+        disabled
+      >
+        ← Sebelumnya
+      </button>
+
+      <span
+        id="chapterLabel"
+        aria-live="polite"
+      >
+        Memuat chapter…
+      </span>
+
+      <button
+        id="nextBtn"
+        class="btn primary"
+        type="button"
+        disabled
+      >
+        Berikutnya →
+      </button>
+
+    </div>
+
+
+    <!-- ========================================
+         AREA HALAMAN KOMIK
+         ======================================== -->
+
+    <div
+      id="pages"
+      class="pages"
+      aria-live="polite"
+    >
+
+      <div class="reader-loading">
+
+        <div class="reader-spinner"></div>
+
+        <div>
+          Memuat halaman komik…
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================
+         NAVIGASI BAWAH
+         ======================================== -->
+
+    <div class="reader-bottom">
+
+      <button
+        id="prevBottom"
+        class="btn"
+        type="button"
+        disabled
+      >
+        ← Sebelumnya
+      </button>
+
+      <button
+        id="nextBottom"
+        class="btn primary"
+        type="button"
+        disabled
+      >
+        Berikutnya →
+      </button>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==========================================
+       DATA KOMIK
+       HARUS DIMUAT TERLEBIH DAHULU
+       ========================================== -->
+
+  <script
+    src="assets/data.js"
+  ></script>
+
+
+  <!-- ==========================================
+       READER JAVASCRIPT
+       ========================================== -->
+
+  <script
+    src="assets/reader.js"
+  ></script>
+
+</body>
+</html>
